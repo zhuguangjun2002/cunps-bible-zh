@@ -2,8 +2,6 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
-
 interface Props {
   prev: { book: string; chapter: number } | null
   next: { book: string; chapter: number } | null
@@ -17,9 +15,9 @@ export function KeyboardShortcuts({ prev, next }: Props) {
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
       if (e.metaKey || e.ctrlKey || e.altKey) return
       if (e.key === 'ArrowLeft' || e.key === 'h') {
-        if (prev) router.push(`${basePath}/read/${prev.book}/${prev.chapter}/`)
+        if (prev) router.push(`/read/${prev.book}/${prev.chapter}/`)
       } else if (e.key === 'ArrowRight' || e.key === 'l') {
-        if (next) router.push(`${basePath}/read/${next.book}/${next.chapter}/`)
+        if (next) router.push(`/read/${next.book}/${next.chapter}/`)
       } else if (e.key === '/') {
         e.preventDefault()
         const input = document.querySelector<HTMLInputElement>('input[type="search"]')

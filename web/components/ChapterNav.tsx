@@ -19,7 +19,7 @@ export function ChapterNav({ book, chapter, allBooks, prev, next }: Props) {
       <div className="flex items-center gap-2">
         <select
           value={book.code}
-          onChange={(e) => router.push(`${basePath}/read/${e.target.value}/1/`)}
+          onChange={(e) => router.push(`/read/${e.target.value}/1/`)}
           className="rounded-md border border-black/10 bg-white/60 px-2 py-1 text-sm dark:border-white/10 dark:bg-white/5"
           aria-label="切换书卷"
         >
@@ -32,7 +32,7 @@ export function ChapterNav({ book, chapter, allBooks, prev, next }: Props) {
         <select
           value={chapter}
           onChange={(e) =>
-            router.push(`${basePath}/read/${book.code}/${e.target.value}/`)
+            router.push(`/read/${book.code}/${e.target.value}/`)
           }
           className="rounded-md border border-black/10 bg-white/60 px-2 py-1 text-sm dark:border-white/10 dark:bg-white/5"
           aria-label="切换章节"

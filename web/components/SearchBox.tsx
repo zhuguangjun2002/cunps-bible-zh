@@ -3,8 +3,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { parseReference } from '@/lib/reference'
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
-
 export function SearchBox() {
   const router = useRouter()
   const [value, setValue] = useState('')
@@ -16,10 +14,10 @@ export function SearchBox() {
     const ref = parseReference(q)
     if (ref) {
       const anchor = ref.verseStart ? `#v${ref.verseStart}` : ''
-      router.push(`${basePath}/read/${ref.book}/${ref.chapter}/${anchor}`)
+      router.push(`/read/${ref.book}/${ref.chapter}/${anchor}`)
       return
     }
-    router.push(`${basePath}/search/?q=${encodeURIComponent(q)}`)
+    router.push(`/search/?q=${encodeURIComponent(q)}`)
   }
 
   return (
