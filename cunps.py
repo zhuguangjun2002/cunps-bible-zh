@@ -1,14 +1,14 @@
-"""新標點和合本（CUNP）抓取工具。
+"""新标点和合本（CUNP）抓取工具。
 
 子命令：
-  fetch    從 fhl.net API 抓取所有章節，輸出每卷一份 JSON
-  derive   從 JSON 派生純文字（每章一檔）
-  validate 與 GitHub 參考資料集逐節比對
+  fetch    从 fhl.net API 抓取所有章节，按卷写入 JSON（含错字订正，见 corrections.py）
+  derive   从 JSON 派生纯文本（每章一份）
+  validate 与 bolls.life CUNPS 参考数据逐节比对
 
 用法：
   python cunps.py fetch [--only CODE] [--force]
   python cunps.py derive [--only CODE]
-  python cunps.py validate
+  python cunps.py validate [--refresh]
 """
 
 from __future__ import annotations
@@ -28,6 +28,7 @@ from typing import Iterable
 import requests
 
 from books import BOOKS, BY_CODE
+from corrections import apply_corrections
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "cunps"
@@ -43,10 +44,10 @@ USER_AGENT = "cunps-fetcher/1.0 (private archive; contact: zhuguangjun2002@gmail
 
 
 def _fetch_chapter(session: requests.Session, fhl_name: str, chap: int) -> dict:
-    """單一章抓取，含指數退避重試。回傳 raw JSON。
+    """单章抓取，含指数退避重试。返回 raw JSON。
 
-    注意：FHL API 在 gb=1 時必須送簡體簡稱（fhl_s），否則 fallback 到預設「羅」。
-    回應的 record[0].chineses 必須等於送出的 fhl_name，否則視為失敗。
+    注意：FHL API 在 gb=1 时必须送简体简称（fhl_s），否则 fallback 到默认「罗」。
+    响应的 record[0].chineses 必须等于送出的 fhl_name，否则视为失败。
     """
     delay = 1.0
     last_err: Exception | None = None
@@ -81,7 +82,7 @@ def _fetch_chapter(session: requests.Session, fhl_name: str, chap: int) -> dict:
 
 
 def _cached_chapter(session: requests.Session, code: str, fhl_name: str, chap: int, force: bool) -> dict:
-    """讀快取，缺則抓並寫快取。"""
+    """读缓存，缺则抓并写缓存。"""
     cache_path = CACHE_DIR / code / f"{chap:03d}.json"
     if cache_path.exists() and not force:
         return json.loads(cache_path.read_text(encoding="utf-8"))
@@ -113,13 +114,18 @@ def cmd_fetch(args: argparse.Namespace) -> int:
             verses = []
             for rec in data["record"]:
                 text = rec["bible_text"].strip()
-                # FHL 在 CUNP「並於上節」（內容已併入前一節以保持節號）回應 placeholder 'a'
+                # FHL 在 CUNP「并于上节」（内容已并入前一节以保持节号）响应 placeholder 'a'
                 if text == "a":
                     text = "并于上节"
                 verses.append({"sec": int(rec["sec"]), "text": text})
             chapters_data.append({"chapter": chap, "verses": verses})
             verses_total += len(verses)
             print(f"  [{i:02d}/{len(targets):02d}] {code} {chap:>3}/{chap_count}  verses={len(verses)}", flush=True)
+
+        # 应用上游错字订正（见 corrections.py）
+        n_fixed = apply_corrections(code, chapters_data)
+        if n_fixed:
+            print(f"  -> {code}: 应用 {n_fixed} 条订正", flush=True)
 
         out = {
             "code": code,
@@ -144,10 +150,10 @@ def cmd_fetch(args: argparse.Namespace) -> int:
         total_verses_all += verses_total
         print(f"  -> wrote {code}.json  ({verses_total} verses)", flush=True)
 
-    # 只有抓全本時才寫 manifest
+    # 只有抓全本时才写 manifest
     if not args.only:
         manifest = {
-            "version": "nstrunv (新標點和合本，簡體)",
+            "version": "nstrunv (新标点和合本，简体)",
             "source": FHL_ENDPOINT,
             "generated_at": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
             "books": manifest_books,
@@ -193,13 +199,13 @@ def cmd_derive(args: argparse.Namespace) -> int:
 
 # ---- validate -------------------------------------------------------------
 
-# 候選 CUNP 簡體參考資料集（GitHub raw URL）。實作時擇優使用。
+# CUNP 简体参考数据来源（GitHub raw URL）。实作时择优使用。
 REFERENCE_URLS = [
-    # bolls.life 開放 API（CUV 簡體，欄位 pk/chapter/verse/text）
+    # bolls.life 开放 API（CUV 简体，字段 pk/chapter/verse/text）
     "https://bolls.life/get-text/CUNPS/{book}/{chap}/",
 ]
 
-# bolls.life 使用 1..66 的書卷編號（與我們的 BOOKS 順序一致）
+# bolls.life 使用 1..66 的书卷编号（与我们的 BOOKS 顺序一致）
 
 
 _TAG_RE = re.compile(r"<[^>]+>")
@@ -207,24 +213,24 @@ _TAG_RE = re.compile(r"<[^>]+>")
 
 def _normalize(s: str) -> str:
     s = unicodedata.normalize("NFC", s)
-    # 剝除 bolls.life 內嵌的標示 HTML（<i> 翻譯插入字 / <e> 專有名詞 / <sup> 註解 / <br>）
+    # 剥除 bolls.life 内嵌的标示 HTML（<i> 翻译插入字 / <e> 专有名词 / <sup> 注解 / <br>）
     s = _TAG_RE.sub("", s)
-    # 各家用詞／字形差異
+    # 各家用词 / 字形差异
     for src, dst in [
         ("甚麼", "什麼"), ("甚么", "什么"),  # FHL 用「甚」，bolls 用「什」
-        ("──", "—"), ("―", "—"), ("--", "—"),  # 破折號統一
+        ("──", "—"), ("―", "—"), ("--", "—"),  # 破折号统一
     ]:
         s = s.replace(src, dst)
-    # 標點與空白統一移除（只比較漢字／數字內容）
+    # 标点与空白统一移除（只比较汉字 / 数字内容）
     drop = set("　 \t\r\n「」“”『』‘’\"'（）()〔〕[]【】《》、，。．,.;:!?？！…─—－–-·•‧・*")
     s = "".join(ch for ch in s if ch not in drop)
-    # 古字 ↔ 現代字（CUNP 不同版本互換）
+    # 古字 ↔ 现代字（CUNP 不同版本互换）
     char_map = str.maketrans({"牠": "它", "祂": "他", "妳": "你"})
     return s.translate(char_map)
 
 
 def _fetch_reference_book(session: requests.Session, book_idx: int, chapters: int) -> dict[tuple[int, int], str]:
-    """從 bolls.life 抓參考資料，回傳 {(chap, sec): text}。"""
+    """从 bolls.life 抓参考数据，返回 {(chap, sec): text}。"""
     out: dict[tuple[int, int], str] = {}
     for chap in range(1, chapters + 1):
         url = f"https://bolls.life/get-text/CUNPS/{book_idx}/{chap}/"
@@ -251,7 +257,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
 
-    # 載入或抓取參考資料
+    # 加载或抓取参考数据
     if ref_cache.exists() and not args.refresh:
         reference = json.loads(ref_cache.read_text(encoding="utf-8"))
         print(f"loaded reference from cache: {ref_cache}")
@@ -265,7 +271,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
         ref_cache.parent.mkdir(parents=True, exist_ok=True)
         ref_cache.write_text(json.dumps(reference, ensure_ascii=False), encoding="utf-8")
 
-    # 逐節比對
+    # 逐节比对
     diffs = []
     total = 0
     mismatches = 0
@@ -288,7 +294,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
                     continue
                 if _normalize(v["text"]) != _normalize(ref_text):
                     mismatches += 1
-                    if len(diffs) < 500:  # 限制 diff 大小
+                    if len(diffs) < 500:  # 限制 diff 体积
                         diffs.append({
                             "code": code,
                             "chap": ch["chapter"],
@@ -332,20 +338,20 @@ def _filter_books(only: str | None) -> list[dict]:
 
 
 def main(argv: Iterable[str] | None = None) -> int:
-    p = argparse.ArgumentParser(description="CUNP (新標點和合本) 抓取工具")
+    p = argparse.ArgumentParser(description="CUNP (新标点和合本) 抓取工具")
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    p_fetch = sub.add_parser("fetch", help="從 fhl.net 抓取 JSON")
-    p_fetch.add_argument("--only", help="只抓特定書卷（逗號分隔 USFM 代碼，如 GEN,EXO）")
-    p_fetch.add_argument("--force", action="store_true", help="忽略快取重抓")
+    p_fetch = sub.add_parser("fetch", help="从 fhl.net 抓取 JSON")
+    p_fetch.add_argument("--only", help="只抓特定书卷（逗号分隔 USFM 代码，如 GEN,EXO）")
+    p_fetch.add_argument("--force", action="store_true", help="忽略缓存重抓")
     p_fetch.set_defaults(func=cmd_fetch)
 
-    p_derive = sub.add_parser("derive", help="從 JSON 派生純文字")
-    p_derive.add_argument("--only", help="只派生特定書卷")
+    p_derive = sub.add_parser("derive", help="从 JSON 派生纯文本")
+    p_derive.add_argument("--only", help="只派生特定书卷")
     p_derive.set_defaults(func=cmd_derive)
 
-    p_val = sub.add_parser("validate", help="與 bolls.life CUV 交叉校對")
-    p_val.add_argument("--refresh", action="store_true", help="忽略參考快取重抓")
+    p_val = sub.add_parser("validate", help="与 bolls.life CUNPS 交叉校对")
+    p_val.add_argument("--refresh", action="store_true", help="忽略参考缓存重抓")
     p_val.set_defaults(func=cmd_validate)
 
     args = p.parse_args(list(argv) if argv is not None else None)

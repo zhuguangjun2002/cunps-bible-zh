@@ -1,11 +1,11 @@
-"""66 卷聖經中繼資料。
+"""66 卷圣经中继数据。
 
-- code: USFM 標準三字母代碼（檔名用）
-- fhl_t: 信望愛 API `chineses` 參數（繁體簡稱，gb=0 用）
-- fhl_s: 信望愛 API `chineses` 參數（簡體簡稱，gb=1 用 —— 否則 API 會 fallback 到 default 「羅」）
-- name_t: 繁體正式名
-- name_s: 簡體正式名
-- chapters: 章數
+- code: USFM 标准三字母代码（文件名用）
+- fhl_t: 信望爱 API `chineses` 参数（繁体简称，gb=0 用）
+- fhl_s: 信望爱 API `chineses` 参数（简体简称，gb=1 用 —— 否则 API 会 fallback 到 default「罗」）
+- name_t: 繁体正式名
+- name_s: 简体正式名
+- chapters: 章数
 """
 
 BOOKS = [
