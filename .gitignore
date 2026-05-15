@@ -14,3 +14,12 @@ venv/
 .idea/
 .vscode/
 *.swp
+
+# Web app build artifacts (regenerable from data/cunps/)
+web/node_modules/
+web/.next/
+web/out/
+web/public/bible/
+web/public/search-index.json
+web/lib/generated/
+web/next-env.d.ts
