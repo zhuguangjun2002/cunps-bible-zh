@@ -3,6 +3,8 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { parseReference } from '@/lib/reference'
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
+
 export function SearchBox() {
   const router = useRouter()
   const [value, setValue] = useState('')
@@ -14,7 +16,9 @@ export function SearchBox() {
     const ref = parseReference(q)
     if (ref) {
       const anchor = ref.verseStart ? `#v${ref.verseStart}` : ''
-      router.push(`/read/${ref.book}/${ref.chapter}/${anchor}`)
+      // 用整页导航,确保浏览器解析 hash 并触发 :target 高亮
+      // (Next.js App Router 的 router.push 带 hash 时不会重算 :target)
+      window.location.assign(`${basePath}/read/${ref.book}/${ref.chapter}/${anchor}`)
       return
     }
     router.push(`/search/?q=${encodeURIComponent(q)}`)

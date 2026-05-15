@@ -7,18 +7,19 @@ import { BOOKS_BY_CODE } from '@/lib/generated/books'
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 
 function highlight(text: string, query: string) {
-  if (!query) return text
-  const chars = [...query].filter((c) => /[一-鿿a-zA-Z0-9]/.test(c))
-  if (!chars.length) return text
-  const pattern = new RegExp(
-    chars.map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'),
-    'gi',
-  )
+  const q = query.trim()
+  if (!q) return text
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const pattern = new RegExp(escaped, 'gi')
   const parts: React.ReactNode[] = []
   let last = 0
   let m: RegExpExecArray | null
   let i = 0
   while ((m = pattern.exec(text))) {
+    if (m.index === pattern.lastIndex) {
+      pattern.lastIndex++
+      continue
+    }
     if (m.index > last) parts.push(text.slice(last, m.index))
     parts.push(
       <mark key={i++} className="rounded-sm bg-yellow-200/70 px-0.5 dark:bg-yellow-400/30">
