@@ -1,0 +1,408 @@
+{
+  "version": "nstrunv (新標點和合本，簡體)",
+  "source": "https://bible.fhl.net/json/qb.php",
+  "generated_at": "2026-05-15T03:18:09Z",
+  "books": [
+    {
+      "code": "GEN",
+      "name": "创世记",
+      "chapters": 50,
+      "verses_total": 1533
+    },
+    {
+      "code": "EXO",
+      "name": "出埃及记",
+      "chapters": 40,
+      "verses_total": 1213
+    },
+    {
+      "code": "LEV",
+      "name": "利未记",
+      "chapters": 27,
+      "verses_total": 859
+    },
+    {
+      "code": "NUM",
+      "name": "民数记",
+      "chapters": 36,
+      "verses_total": 1288
+    },
+    {
+      "code": "DEU",
+      "name": "申命记",
+      "chapters": 34,
+      "verses_total": 959
+    },
+    {
+      "code": "JOS",
+      "name": "约书亚记",
+      "chapters": 24,
+      "verses_total": 658
+    },
+    {
+      "code": "JDG",
+      "name": "士师记",
+      "chapters": 21,
+      "verses_total": 618
+    },
+    {
+      "code": "RUT",
+      "name": "路得记",
+      "chapters": 4,
+      "verses_total": 85
+    },
+    {
+      "code": "1SA",
+      "name": "撒母耳记上",
+      "chapters": 31,
+      "verses_total": 810
+    },
+    {
+      "code": "2SA",
+      "name": "撒母耳记下",
+      "chapters": 24,
+      "verses_total": 695
+    },
+    {
+      "code": "1KI",
+      "name": "列王纪上",
+      "chapters": 22,
+      "verses_total": 816
+    },
+    {
+      "code": "2KI",
+      "name": "列王纪下",
+      "chapters": 25,
+      "verses_total": 719
+    },
+    {
+      "code": "1CH",
+      "name": "历代志上",
+      "chapters": 29,
+      "verses_total": 942
+    },
+    {
+      "code": "2CH",
+      "name": "历代志下",
+      "chapters": 36,
+      "verses_total": 822
+    },
+    {
+      "code": "EZR",
+      "name": "以斯拉记",
+      "chapters": 10,
+      "verses_total": 280
+    },
+    {
+      "code": "NEH",
+      "name": "尼希米记",
+      "chapters": 13,
+      "verses_total": 406
+    },
+    {
+      "code": "EST",
+      "name": "以斯帖记",
+      "chapters": 10,
+      "verses_total": 167
+    },
+    {
+      "code": "JOB",
+      "name": "约伯记",
+      "chapters": 42,
+      "verses_total": 1070
+    },
+    {
+      "code": "PSA",
+      "name": "诗篇",
+      "chapters": 150,
+      "verses_total": 2461
+    },
+    {
+      "code": "PRO",
+      "name": "箴言",
+      "chapters": 31,
+      "verses_total": 915
+    },
+    {
+      "code": "ECC",
+      "name": "传道书",
+      "chapters": 12,
+      "verses_total": 222
+    },
+    {
+      "code": "SNG",
+      "name": "雅歌",
+      "chapters": 8,
+      "verses_total": 117
+    },
+    {
+      "code": "ISA",
+      "name": "以赛亚书",
+      "chapters": 66,
+      "verses_total": 1292
+    },
+    {
+      "code": "JER",
+      "name": "耶利米书",
+      "chapters": 52,
+      "verses_total": 1364
+    },
+    {
+      "code": "LAM",
+      "name": "耶利米哀歌",
+      "chapters": 5,
+      "verses_total": 154
+    },
+    {
+      "code": "EZK",
+      "name": "以西结书",
+      "chapters": 48,
+      "verses_total": 1273
+    },
+    {
+      "code": "DAN",
+      "name": "但以理书",
+      "chapters": 12,
+      "verses_total": 357
+    },
+    {
+      "code": "HOS",
+      "name": "何西阿书",
+      "chapters": 14,
+      "verses_total": 197
+    },
+    {
+      "code": "JOL",
+      "name": "约珥书",
+      "chapters": 3,
+      "verses_total": 73
+    },
+    {
+      "code": "AMO",
+      "name": "阿摩司书",
+      "chapters": 9,
+      "verses_total": 146
+    },
+    {
+      "code": "OBA",
+      "name": "俄巴底亚书",
+      "chapters": 1,
+      "verses_total": 21
+    },
+    {
+      "code": "JON",
+      "name": "约拿书",
+      "chapters": 4,
+      "verses_total": 48
+    },
+    {
+      "code": "MIC",
+      "name": "弥迦书",
+      "chapters": 7,
+      "verses_total": 105
+    },
+    {
+      "code": "NAM",
+      "name": "那鸿书",
+      "chapters": 3,
+      "verses_total": 47
+    },
+    {
+      "code": "HAB",
+      "name": "哈巴谷书",
+      "chapters": 3,
+      "verses_total": 56
+    },
+    {
+      "code": "ZEP",
+      "name": "西番雅书",
+      "chapters": 3,
+      "verses_total": 53
+    },
+    {
+      "code": "HAG",
+      "name": "哈该书",
+      "chapters": 2,
+      "verses_total": 38
+    },
+    {
+      "code": "ZEC",
+      "name": "撒迦利亚书",
+      "chapters": 14,
+      "verses_total": 211
+    },
+    {
+      "code": "MAL",
+      "name": "玛拉基书",
+      "chapters": 4,
+      "verses_total": 55
+    },
+    {
+      "code": "MAT",
+      "name": "马太福音",
+      "chapters": 28,
+      "verses_total": 1071
+    },
+    {
+      "code": "MRK",
+      "name": "马可福音",
+      "chapters": 16,
+      "verses_total": 678
+    },
+    {
+      "code": "LUK",
+      "name": "路加福音",
+      "chapters": 24,
+      "verses_total": 1151
+    },
+    {
+      "code": "JHN",
+      "name": "约翰福音",
+      "chapters": 21,
+      "verses_total": 878
+    },
+    {
+      "code": "ACT",
+      "name": "使徒行传",
+      "chapters": 28,
+      "verses_total": 1007
+    },
+    {
+      "code": "ROM",
+      "name": "罗马书",
+      "chapters": 16,
+      "verses_total": 433
+    },
+    {
+      "code": "1CO",
+      "name": "哥林多前书",
+      "chapters": 16,
+      "verses_total": 437
+    },
+    {
+      "code": "2CO",
+      "name": "哥林多后书",
+      "chapters": 13,
+      "verses_total": 257
+    },
+    {
+      "code": "GAL",
+      "name": "加拉太书",
+      "chapters": 6,
+      "verses_total": 149
+    },
+    {
+      "code": "EPH",
+      "name": "以弗所书",
+      "chapters": 6,
+      "verses_total": 155
+    },
+    {
+      "code": "PHP",
+      "name": "腓立比书",
+      "chapters": 4,
+      "verses_total": 104
+    },
+    {
+      "code": "COL",
+      "name": "歌罗西书",
+      "chapters": 4,
+      "verses_total": 95
+    },
+    {
+      "code": "1TH",
+      "name": "帖撒罗尼迦前书",
+      "chapters": 5,
+      "verses_total": 89
+    },
+    {
+      "code": "2TH",
+      "name": "帖撒罗尼迦后书",
+      "chapters": 3,
+      "verses_total": 47
+    },
+    {
+      "code": "1TI",
+      "name": "提摩太前书",
+      "chapters": 6,
+      "verses_total": 113
+    },
+    {
+      "code": "2TI",
+      "name": "提摩太后书",
+      "chapters": 4,
+      "verses_total": 83
+    },
+    {
+      "code": "TIT",
+      "name": "提多书",
+      "chapters": 3,
+      "verses_total": 46
+    },
+    {
+      "code": "PHM",
+      "name": "腓利门书",
+      "chapters": 1,
+      "verses_total": 25
+    },
+    {
+      "code": "HEB",
+      "name": "希伯来书",
+      "chapters": 13,
+      "verses_total": 303
+    },
+    {
+      "code": "JAS",
+      "name": "雅各书",
+      "chapters": 5,
+      "verses_total": 108
+    },
+    {
+      "code": "1PE",
+      "name": "彼得前书",
+      "chapters": 5,
+      "verses_total": 105
+    },
+    {
+      "code": "2PE",
+      "name": "彼得后书",
+      "chapters": 3,
+      "verses_total": 61
+    },
+    {
+      "code": "1JN",
+      "name": "约翰一书",
+      "chapters": 5,
+      "verses_total": 105
+    },
+    {
+      "code": "2JN",
+      "name": "约翰二书",
+      "chapters": 1,
+      "verses_total": 13
+    },
+    {
+      "code": "3JN",
+      "name": "约翰三书",
+      "chapters": 1,
+      "verses_total": 15
+    },
+    {
+      "code": "JUD",
+      "name": "犹大书",
+      "chapters": 1,
+      "verses_total": 25
+    },
+    {
+      "code": "REV",
+      "name": "启示录",
+      "chapters": 22,
+      "verses_total": 405
+    }
+  ],
+  "totals": {
+    "books": 66,
+    "chapters": 1189,
+    "verses": 31103
+  }
+}

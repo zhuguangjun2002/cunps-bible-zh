@@ -1,0 +1,16 @@
+# Raw API response cache (regenerable from cunps.py fetch)
+.cache/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Editor / harness state
+.claude/
+.idea/
+.vscode/
+*.swp
