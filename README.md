@@ -26,12 +26,28 @@
 
 `<CODE>` 为 USFM 标准三字母代码（`GEN`、`EXO`、…、`REV`）。
 
+## 环境准备
+
+- **Python 3.10+**（爬虫与订正脚本，conda 或 venv 均可）
+- **Node 20+ + npm**（仅网页阅读器需要，部署 workflow 也用 Node 20）
+
+conda（推荐）：
+```bash
+conda create -n cunps-bible python=3.12 -y
+conda activate cunps-bible
+pip install -r requirements.txt
+```
+
+venv：
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+```
+
 ## Python 抓取工具
 
 ```bash
-pip install -r requirements.txt
-
-# 抓取（缓存在 .cache/，重跑秒级）
+# 抓取（缓存在 .cache/，重跑秒级；fetch 时自动应用 corrections.py 订正）
 python cunps.py fetch [--only GEN,EXO] [--force]
 
 # JSON → 纯文本
@@ -144,13 +160,18 @@ CUNP 中部分节为保持节号与英 / 希伯来原文一致，但内容已并
 
 ### 本地开发
 
+需要 Node 20+：
+
 ```bash
 cd web
 npm install
-npm run dev          # http://localhost:3000
-npm run build        # 静态导出到 web/out/
+npm run dev          # http://localhost:3000（dev 模式无 basePath 前缀）
+npm run build        # 静态导出到 web/out/（生产模式带 /cunps-bible-zh 前缀）
 npx serve out -p 8080
 ```
+
+> dev / prod 表现不同：`output: 'export'` 与 `basePath` 仅在生产构建启用，
+> dev 走常规 Next.js server，避免动态路由 `generateStaticParams` 在 dev 下的早期校验问题。
 
 ### 数据流
 
