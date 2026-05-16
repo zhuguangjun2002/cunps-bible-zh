@@ -23,3 +23,4 @@ web/public/bible/
 web/public/search-index.json
 web/lib/generated/
 web/next-env.d.ts
+web/tsconfig.tsbuildinfo

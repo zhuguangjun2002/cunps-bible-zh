@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getAllBooks, getBook } from '@/lib/books'
 import { getChapter } from '@/lib/bible'
 import { ChapterNav } from '@/components/ChapterNav'
+import { ChapterContent } from '@/components/ChapterContent'
 import { KeyboardShortcuts } from '@/components/KeyboardShortcuts'
 
 interface Params {
@@ -56,24 +57,16 @@ export default function ChapterPage({ params }: { params: Params }) {
   return (
     <article>
       <ChapterNav book={book} chapter={chapter} allBooks={getAllBooks()} prev={prev} next={next} />
-      <h1 className="mb-6 text-2xl font-semibold tracking-wide">
-        {book.name} <span className="text-ink-muted">第 {chapter} 章</span>
-      </h1>
-      <div className="space-y-3 text-lg leading-[2] text-ink dark:text-[#e5e5e0]">
-        {verses.map((v) => (
-          <p key={v.n} id={`v${v.n}`} className="verse">
-            <a
-              href={`#v${v.n}`}
-              className="verse-num hover:text-indigo-500"
-              aria-label={`第 ${v.n} 节`}
-            >
-              {v.n}
-            </a>
-            {v.t}
-          </p>
-        ))}
-      </div>
-      <nav className="mt-10 flex items-center justify-between border-t border-black/5 pt-4 text-sm dark:border-white/5">
+      <header className="mb-8 border-b border-black/5 pb-6 dark:border-white/10">
+        <div className="mb-2 text-xs font-semibold tracking-[0.2em] text-emerald-700 dark:text-emerald-400">
+          新标点和合本
+        </div>
+        <h1 className="text-4xl font-semibold tracking-wide sm:text-5xl">
+          {book.name} <span className="ml-1 font-normal">{chapter}</span>
+        </h1>
+      </header>
+      <ChapterContent verses={verses} />
+      <nav className="mt-12 flex items-center justify-between border-t border-black/5 pt-4 text-sm dark:border-white/10">
         {prev ? (
           <a
             href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/read/${prev.book}/${prev.chapter}/`}

@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import { ThemeToggle } from '@/components/ThemeToggle'
-import { SearchBox } from '@/components/SearchBox'
+import { SidebarShell } from '@/components/SidebarShell'
 import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister'
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
@@ -44,19 +43,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>
-        <header className="sticky top-0 z-40 border-b border-black/5 bg-paper/85 backdrop-blur dark:border-white/5 dark:bg-paper-dark/85">
-          <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3">
-            <a href={`${basePath}/`} className="shrink-0 text-base font-semibold tracking-wide">
-              和合本
-            </a>
-            <SearchBox />
-            <ThemeToggle />
-          </div>
-        </header>
-        <main className="mx-auto max-w-3xl px-4 py-8">{children}</main>
-        <footer className="mx-auto max-w-3xl px-4 py-8 text-center text-xs text-ink-muted">
-          新标点和合本（简体） · 数据源 fhl.net · 仅供个人研究
-        </footer>
+        <SidebarShell />
+        <div className="lg:pl-72">
+          <main className="mx-auto max-w-3xl px-4 py-8 lg:px-8">{children}</main>
+          <footer className="mx-auto max-w-3xl px-4 py-8 text-center text-xs text-ink-muted lg:px-8">
+            新标点和合本（简体） · 数据源 fhl.net · 仅供个人研究
+          </footer>
+        </div>
         <ServiceWorkerRegister />
       </body>
     </html>
